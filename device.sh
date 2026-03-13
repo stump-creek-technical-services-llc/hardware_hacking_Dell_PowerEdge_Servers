@@ -12,12 +12,5 @@ export DEV_PN=1234
 export DEV_VER=1
 
 export DEV_TAG=GizmoTek_Gizmo_1234_v1
-export DEV_TAG_SC=gizmotek_gizmo_1234_v1
-
-export FW_RESET_FILENAME=${DEV_TAG_SC}.reset.bin
-export FW_FILENAME=${DEV_TAG_SC}.bin
-export FW_UPDATE_FILENAME=${DEV_TAG_SC}.update.bin
-
-export FW_RESET_PATH=firmware-images/${FW_RESET_FILENAME}
-export FW_PATH=firmware-images/${FW_FILENAME}
-export FW_UPDATE_PATH=firmware-images/${FW_UPDATE_FILENAME}
+DEV_TAG_SC="$(echo "${DEV_TAG}" | tr '[:upper:]' '[:lower:]')"
+export DEV_TAG_SC

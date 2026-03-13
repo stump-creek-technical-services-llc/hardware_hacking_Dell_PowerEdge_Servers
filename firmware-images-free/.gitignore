@@ -3,3 +3,5 @@
 *
 !*.md
 !LICENSE
+!Makefile
+!sha256sums

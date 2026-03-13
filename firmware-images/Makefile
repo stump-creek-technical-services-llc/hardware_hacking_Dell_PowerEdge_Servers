@@ -1,34 +1,54 @@
-# FLAVOR: typically "", "reset", or "update".
-ifeq ($(FLAVOR),)
-    FLAVOR_EXT = bin
-    $(info FLAVOR is default)
-else
-    FLAVOR_EXT = $(FLAVOR).bin
-    $(info FLAVOR is "$(FLAVOR)")
-endif
-
 GIT_DIR := $(shell git rev-parse --show-toplevel)
 include $(GIT_DIR)/device.sh
+include $(HARDWARE_HACKING_ROOT)/include/make/flavor.mk
 
-BIN_FILENAME=$(DEV_TAG_SC).$(FLAVOR_EXT)
+OUTPUT_FILENAME=$(DEV_TAG_SC).$(FLAVOR_BIN_EXT)
 
-FW_DIR=$(GIT_DIR)/../../firmware-copyrighted/$(DEV_TAG)
-BIN_PATH=$(FW_DIR)/$(BIN_FILENAME)
+OUTPUT_DIR=$(HARDWARE_HACKING_ROOT)/firmware-copyrighted/$(DEV_TAG)
+OUTPUT_PATH=$(OUTPUT_DIR)/$(OUTPUT_FILENAME)
 
-LOG_PATH=$(GIT_DIR)/log/flashrom.$(FLAVOR_EXT).log
+FW_IMAGES_DIR=$(GIT_DIR)/firmware-images
+FW_IMAGES_LINK_PATH=$(FW_IMAGES_DIR)/$(OUTPUT_FILENAME)
+FW_IMAGES_HEX_PATH=FW_IMAGES_LINK_PATH.hex
+LOG_PATH=$(FW_IMAGES_DIR)/$(DEV_TAG_SC).$(FLAVOR_BIN_EXT).flashrom.log
 
 TEE=tee -a $(LOG_PATH)
 
-all: bin
+# Targets
+.PHONY: all
 
-bin: $(BIN_FILENAME)
+all: \
+	$(OUTPUT_DIR) \
+	$(OUTPUT_PATH) \
+	$(OUTPUT_DIR)/sha256sums \
+	$(FW_IMAGES_LINK_PATH) \
+	$(FW_IMAGES_DIR)/sha256sums \
+	$(FW_IMAGES_HEX_PATH)
 
-$(FW_DIR):
-	mkdir -p $(FW_DIR)
+$(OUTPUT_DIR):
+	mkdir -p $(OUTPUT_DIR)
 
-$(BIN_FILENAME): $(BIN_PATH)
-	ln -sf $(BIN_PATH) $(BIN_FILENAME)
-	LANG=C bin2hex $(BIN_FILENAME) | $(TEE)
+$(OUTPUT_PATH): $(OUTPUT_DIR)
+	flashrom_dump $(OUTPUT_PATH) | $(TEE)
+	git -C $(OUTPUT_DIR) stash
+	git -C $(OUTPUT_DIR) add $(OUTPUT_PATH)
+	git -C $(OUTPUT_DIR) commit -m "Added $(FLAVOR) firmware for $(DEV_TAG)"
+	git -C $(OUTPUT_DIR) push
+	git -C $(OUTPUT_DIR) stash pop || true
 
-$(BIN_PATH): $(FW_DIR)
-	flashrom_dump $(BIN_PATH) | $(TEE)
+$(OUTPUT_DIR)/sha256sums: $(OUTPUT_PATH)
+	cd $(OUTPUT_DIR) && sha256sum $(OUTPUT_PATH) >> sha256sums
+	git -C $(OUTPUT_DIR) stash
+	git -C $(OUTPUT_DIR) add sha256sums
+	git -C $(OUTPUT_DIR) commit -m "Updated sha256sums $(OUTPUT_FILENAME)"
+	git -C $(OUTPUT_DIR) push
+	git -C $(OUTPUT_DIR) stash pop || true
+
+$(FW_IMAGES_LINK_PATH): $(OUTPUT_PATH)
+	ln -sf $(OUTPUT_PATH) $(FW_IMAGES_LINK_PATH)
+
+$(FW_IMAGES_DIR)/sha256sums: $(FW_IMAGES_LINK_PATH)
+	cd $(FW_IMAGES_DIR) && sha256sum $(FW_IMAGES_LINK_PATH) >> sha256sums
+
+$(FW_IMAGES_HEX_PATH): $(FW_IMAGES_LINK_PATH)
+	LANG=C bin2hex $(OUTPUT_FILENAME) | $(TEE)
