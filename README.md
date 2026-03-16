@@ -1,8 +1,10 @@
-# ${DEV_MFR} ${DEV_NAME} ${DEV_PN} ${DEV_VER}
+# ${DEV_TAG}
 
-Mugshots
+(photos)
 
-Mugshots
+
+
+
 
 ## Checklist
 
@@ -25,34 +27,53 @@ Mugshots
     - [ ] `uname -a`
     - [ ] `busybox --help`
     - [ ] `cat /proc/mtd`
-- [ ] 
 
 ## Critical Info
 
+(photo)
+
+External label:
+
 ```text
 Serial no.: 
-Input Voltage: XX VDC: XX A
+Input Voltage: XX VDC: XX A -@+
 ```
 
 ## Reference material:
 
-* [Manufacturer reference]()
-* Firmware update
-* OpenWRT 
+* [Product Link]()
+* [Firmware update]()
+* [Open firmware]()
 
-## Inside
+## Opening
 
-Opening
+(Screws?)
 
-### Boards
+## Board
 
-#### Mainboard
+Markings:
 
-### Chips
+```text
 
-####
+```
+
+### Chip
+
+(photo)
+
+Package
+
+Markings:
+
+```text
+```
+
+[Datasheet]
+
+Description (source):
 
 
-### Firmware
 
-### Conclusion: ?
+## Firmware
+
+## Conclusion: ?
