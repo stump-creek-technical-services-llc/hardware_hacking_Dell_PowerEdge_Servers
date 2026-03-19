@@ -6,11 +6,11 @@
 #   . device.sh
 #   echo "Nice ${DEV_NAME} you have there."
 
-export DEV_MFR=GizmoTek
-export DEV_NAME=Gizmo
-export DEV_PN=1234
-export DEV_VER=1
+export DEV_MFR=Dell
+export DEV_NAME=PowerEdge_R630
+export DEV_PN=
+export DEV_VER=
 
-export DEV_TAG=GizmoTek_Gizmo_1234_v1
+export DEV_TAG=Dell_PowerEdge_R630
 DEV_TAG_SC="$(echo "${DEV_TAG}" | tr '[:upper:]' '[:lower:]')"
 export DEV_TAG_SC
