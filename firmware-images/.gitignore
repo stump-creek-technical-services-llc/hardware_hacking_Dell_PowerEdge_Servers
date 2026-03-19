@@ -7,3 +7,4 @@
 !*.md
 !Makefile
 !sha256sums
+!*.log

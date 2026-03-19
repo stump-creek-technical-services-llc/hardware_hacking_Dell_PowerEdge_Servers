@@ -1,5 +1,5 @@
 GIT_DIR := $(shell git rev-parse --show-toplevel)
-include $(GIT_DIR)/device.sh
+include $(GIT_DIR)/device.properties
 include $(HARDWARE_HACKING_ROOT)/include/make/flavor.mk
 
 # This file is meant to run on GNU/Linux
