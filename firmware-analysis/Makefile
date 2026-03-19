@@ -19,7 +19,7 @@ OUTPUT_DIR := $(FIRMWARE_ANALYSIS_DIR)/output
 OUTPUT_ANALYSIS_DIR := $(OUTPUT_DIR)/$(FILENAME).analysis
 LOCAL_BINWALK := $(GIT_DIR)/../../tools/binwalk/target/release/binwalk
 
-.PHONY: analysis clean extractions hash check
+.PHONY: analysis clean extractions hash check entropy fsstat
 
 all: check analysis
 #	make analysis FILE=$(GIT_DIR)/firmware-images/firmware-free.bin
@@ -28,8 +28,11 @@ analysis: \
 		check \
 		$(OUTPUT_ANALYSIS_DIR) \
 		extractions \
-		$(OUTPUT_ANALYSIS_DIR)/entropy \
-		$(OUTPUT_ANALYSIS_DIR)/fsstat
+		entropy
+
+entropy: $(OUTPUT_ANALYSIS_DIR)/entropy
+
+fsstat: $(OUTPUT_ANALYSIS_DIR)/fsstat
 
 clean:
 	rm -rf $(OUTPUT_DIR)
