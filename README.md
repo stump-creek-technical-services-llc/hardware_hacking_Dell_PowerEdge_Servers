@@ -451,7 +451,7 @@ Filename: `dell_poweredge_r630_w25q64bvf1g_1207.bin`
 
 ![chip_Macronix_MX25L12873FMI_8D148100.jpg](photos/chip_Macronix_MX25L12873FMI_8D148100.jpg)
 
-* 128 Mib = 8 MiB
+* 128 Mib = 16 MiB
 * Package: SOIC-16
 
 Markings:
@@ -463,6 +463,25 @@ MX25L12873FMI-10G
 ```
 
 Filename: `dell_poweredge_r630_mx25l12873fmi_8d148100.bin`
+
+### Atmel 25DF321A
+
+![chip_Atmel_25DF321A.jpg](photos/chip_Atmel_25DF321A.jpg)
+
+I think this one came off of one of the SAS expansion boards.
+
+* 32 Mib = 4 MiB
+* Package: SOIC-8
+
+Markings:
+
+```text
+ATMEL1210
+25DF321A
+SH
+```
+
+Filename: `dell_poweredge_r630_atmel_25df321a_sh.bin`
 
 ## Firmware
 
